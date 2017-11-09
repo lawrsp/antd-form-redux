@@ -15,6 +15,7 @@ state = {
     fields: {
       ....
     },
+    submitting: bool,
     submitFailed: bool,
     errors: Object / undefined,
   },
@@ -56,7 +57,7 @@ export default function reducer(state = {}, action) {
         [form]: {
           ...state[form],
           fields: { ...oldFields, ...fields },
-          errors: undefined,
+          errors: false,
         }
       };
     }
