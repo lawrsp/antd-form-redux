@@ -1,0 +1,24 @@
+{
+  "name": "antd-form-redux",
+  "version": "1.0.0",
+  "description": "connect antd form to redux",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lawrsp/antd-form-redux.git"
+  },
+  "keywords": [
+    "antd",
+    "form",
+    "redux"
+  ],
+  "author": "lawrsp",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lawrsp/antd-form-redux/issues"
+  },
+  "homepage": "https://github.com/lawrsp/antd-form-redux#readme"
+}
