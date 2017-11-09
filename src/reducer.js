@@ -9,6 +9,18 @@ import {
   FORM_CLEAR_SUBMIT_ERRORS
 } from './actions';
 
+/*
+state = {
+  'some form name': {
+    fields: {
+      ....
+    },
+    submitFailed: bool,
+    errors: Object / undefined,
+  },
+  'another form name': {....}
+}
+*/
 export default function reducer(state = {}, action) {
   const { type, payload, meta = {}, error = false } = action;
   const { form } = meta;
@@ -43,7 +55,8 @@ export default function reducer(state = {}, action) {
         ...state,
         [form]: {
           ...state[form],
-          fields: { ...oldFields, ...fields }
+          fields: { ...oldFields, ...fields },
+          errors: undefined,
         }
       };
     }
