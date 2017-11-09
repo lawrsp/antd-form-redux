@@ -1,6 +1,6 @@
 {
   "name": "antd-form-redux",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "connect antd form to redux",
   "main": "index.js",
   "scripts": {
@@ -22,3 +22,4 @@
   },
   "homepage": "https://github.com/lawrsp/antd-form-redux#readme"
 }
+
