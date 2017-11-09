@@ -1,8 +1,8 @@
 {
   "name": "antd-form-redux",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "connect antd form to redux",
-  "main": "src/index.js",
+  "main": "lib/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -20,6 +20,14 @@
   "bugs": {
     "url": "https://github.com/lawrsp/antd-form-redux/issues"
   },
-  "homepage": "https://github.com/lawrsp/antd-form-redux#readme"
+  "homepage": "https://github.com/lawrsp/antd-form-redux#readme",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "react": "^16.1.0"
+  }
 }
 
