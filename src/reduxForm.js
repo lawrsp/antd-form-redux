@@ -36,7 +36,6 @@ const reduxForm = config => CompNode => {
         props.dispatch(change(config.form, changedFields));
       },
       mapPropsToFields(props) {
-        console.log('props:=====', props);
         return props.formFields;
       },
       onValuesChange(_, values) {
@@ -47,3 +46,4 @@ const reduxForm = config => CompNode => {
 };
 
 export default reduxForm;
+

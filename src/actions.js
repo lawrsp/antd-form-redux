@@ -1,4 +1,3 @@
-import { successType, failType } from '../../utils/actionUtils';
 
 const prefix = '@antd-form-redux';
 export const FORM_INIT = `${prefix}/init`;
@@ -7,8 +6,8 @@ export const FORM_CHANGE = `${prefix}/change`;
 export const FORM_SUBMIT = `${prefix}/submit`;
 export const FORM_STOP_SUBMIT = `${prefix}/stop_submit`;
 export const FORM_CLEAR_SUBMIT_ERRORS = `${prefix}/clear_submit_errors`;
-export const FORM_SUBMIT_FAILED = failType(FORM_SUBMIT);
-export const FORM_SUBMIT_SUCCEEDED = successType(FORM_SUBMIT);
+export const FORM_SUBMIT_FAILED = `${FORM_SUBMIT}/fail`;
+export const FORM_SUBMIT_SUCCEEDED = `${FORM_SUBMIT}/success`;
 
 export const initialize = (form, data) => {
   const action = {
@@ -63,3 +62,4 @@ export const clearSubmitErrors = form => ({
   type: FORM_CLEAR_SUBMIT_ERRORS,
   meta: { form }
 });
+
