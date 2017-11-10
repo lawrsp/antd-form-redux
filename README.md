@@ -6,7 +6,7 @@ use like redux-form's "reduxForm" HOC
 
 
 ## Usage 
-1. add reducer to your reducers
+### 1. add reducer to your reducers
 ```
 import { combineReducers } from 'redux';
 import { reducer as formReducer } from 'fantd-form-redux';
@@ -19,7 +19,7 @@ const rootReducer = combineReducers({
 
 ```
 
-2. Use reduxForm(config) connect component 
+### 2. Use reduxForm(config) connect component 
 ```
 class NormalAntdForm extend Compoent {
   ...
@@ -35,13 +35,13 @@ export default reduxForm({
 })(NormalAntdForm);
 
 ```
-### config:
-#### form:  String 
+#### config:
+##### form:  String 
 the name of the form data stored 
-#### initialValues: [key: value] 
+##### initialValues: [key: value] 
 the initialValues
 
-### the form data 
+#### the form data 
 you can get the form data represented by key named the form name
 ```
 const { test } = this.props;
@@ -53,28 +53,28 @@ const { test } = this.props;
 the errors will be setted by dispatch a stopSubmit(form, errors) action
 
 
-3. use action creators if you need:
+### 3. use action creators if you need:
 
-### initialize: (form, data) 
+#### initialize: (form, data) 
 data : { fields, ....} 
 use fields to set initialValues, you donnot use this action normally
 
-### destroy(...forms) 
+#### destroy(...forms) 
 delete the form data from store
 you donnot use this action normally
 
-### change(form, fields) 
+#### change(form, fields) 
 change the form fields values
 
-### startSubmit(form)
+#### startSubmit(form)
 set submitting to true
-### stopSubmit(form, errors)
+#### stopSubmit(form, errors)
 set submitting to false
-### setSubmitSucceeded(form)
+#### setSubmitSucceeded(form)
 set submitFailed to false
-### setSubmitFailed(form)
+#### setSubmitFailed(form)
 set submitFailed to true
-### clearSubmitErrors(form)
+#### clearSubmitErrors(form)
 delete all errors
 
 
