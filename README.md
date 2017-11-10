@@ -26,7 +26,10 @@ class NormalAntdForm extend Compoent {
   render() {
     ...
     const { test } = this.props;
-    const { getFieldDecorator } = this.props.form;    
+    const { getFieldDecorator } = this.props.form;  
+    // use antd's pattern :
+    // getFieldDecorator('fileds', .....)
+    ...
   }
 }
 
