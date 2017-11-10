@@ -11,7 +11,7 @@ use like redux-form's "reduxForm" HOC
 import { combineReducers } from 'redux';
 import { reducer as formReducer } from 'fantd-form-redux';
 
-//import other reducers: reducer
+//import other reducers
 const rootReducer = combineReducers({
   ...reducers,
   form: formReducer,
