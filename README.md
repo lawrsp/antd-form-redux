@@ -57,11 +57,11 @@ the errors will be setted by dispatch a stopSubmit(form, errors) action
 
 #### initialize: (form, data) 
 data : { fields, ....} 
-use fields to set initialValues, you donnot use this action normally
+use fields to set initialValues, you donnot use this action usually
 
 #### destroy(...forms) 
 delete the form data from store
-you donnot use this action normally
+you donnot use this action usually
 
 #### change(form, fields) 
 change the form fields values
