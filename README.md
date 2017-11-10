@@ -56,11 +56,12 @@ the errors will be setted by dispatch a stopSubmit(form, errors) action
 3. use action creators if you need:
 
 ### initialize: (form, data) 
-data : { fields, ....}  
-data must have the `fields` field
+data : { fields, ....} 
+use fields to set initialValues, you donnot use this action normally
 
 ### destroy(...forms) 
 delete the form data from store
+you donnot use this action normally
 
 ### change(form, fields) 
 change the form fields values
