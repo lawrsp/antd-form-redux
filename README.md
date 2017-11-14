@@ -19,7 +19,7 @@ const rootReducer = combineReducers({
 
 ```
 
-### 2. Use reduxForm(config) connect component 
+### 2. Use reduxForm(config) to connect component 
 ```
 class NormalAntdForm extend Compoent {
   ...
