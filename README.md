@@ -1,4 +1,4 @@
-# antd-form-redux
+# antd-form-redux  for antd-3.0.0-rc
 
 ## Introduction
 connect antd-form to redux
