@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { Form } from 'antd';
-import { initialize, destroy, change } from './actions';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { Form } from "antd";
+import { initialize, destroy, change } from "./actions";
 
-import hoistNonReactStatic from 'hoist-non-react-statics';
+import hoistNonReactStatic from "hoist-non-react-statics";
 
-const getDisplayName = Comp => Comp.displayName || Comp.name || 'Component';
+const getDisplayName = Comp => Comp.displayName || Comp.name || "Component";
 
 //config:
 //form: String,  name of the form
@@ -36,7 +36,14 @@ const reduxForm = config => CompNode => {
         props.dispatch(change(config.form, changedFields));
       },
       mapPropsToFields(props) {
-        return props.formFields;
+        const { formFields = {} } = props;
+        return Object.keys(formFields).reduce(
+          (o, i) => ({
+            ...o,
+            [i]: Form.createFormField(formFields[i])
+          }),
+          {}
+        );
       },
       onValuesChange(_, values) {
         console.log(values);
@@ -46,4 +53,3 @@ const reduxForm = config => CompNode => {
 };
 
 export default reduxForm;
-
