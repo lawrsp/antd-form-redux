@@ -13,7 +13,7 @@ const getDisplayName = Comp => Comp.displayName || Comp.name || 'Component';
 //initialValues : function
 const reduxForm = config => CompNode => {
   class Wrapped extends Component {
-    componentWillMount() {
+    componentDidMount() {
       var initialValues = config.initialValues;
       if (typeof initialValues === 'function') {
         initialValues = config.initialValues(this.props);
