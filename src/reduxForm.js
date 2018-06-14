@@ -1,19 +1,24 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { Form } from "antd";
-import { initialize, destroy, change } from "./actions";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { Form } from 'antd';
+import { initialize, destroy, change } from './actions';
 
-import hoistNonReactStatic from "hoist-non-react-statics";
+import hoistNonReactStatic from 'hoist-non-react-statics';
 
-const getDisplayName = Comp => Comp.displayName || Comp.name || "Component";
+const getDisplayName = Comp => Comp.displayName || Comp.name || 'Component';
 
 //config:
 //form: String,  name of the form
 //initialValues: Object,  initial value of the form
+//initialValues : function
 const reduxForm = config => CompNode => {
   class Wrapped extends Component {
     componentWillMount() {
-      this.props.dispatch(initialize(config.form, config.initialValues));
+      var initialValues = config.initialValues;
+      if (typeof initialValues === 'function') {
+        initialValues = config.initialValues(this.props);
+      }
+      this.props.dispatch(initialize(config.form, initialValues));
     }
     componentWillUnmount() {
       this.props.dispatch(destroy(config.form));
