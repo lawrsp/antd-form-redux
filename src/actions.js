@@ -1,4 +1,3 @@
-
 const prefix = '@antd-form-redux';
 export const FORM_INIT = `${prefix}/init`;
 export const FORM_DESTROY = `${prefix}/destroy`;
@@ -18,7 +17,7 @@ export const initialize = (form, data) => {
 
   if (typeof data === 'object') {
     const fields = Object.keys(data).reduce(
-      (o, k) => ({ ...o, [k]: { value: data[k] } }),
+      (o, k) => ({ ...o, [k]: { value: data[k], name: k } }),
       {}
     );
     action.payload.fields = fields;
@@ -62,4 +61,3 @@ export const clearSubmitErrors = form => ({
   type: FORM_CLEAR_SUBMIT_ERRORS,
   meta: { form }
 });
-
