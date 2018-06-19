@@ -40,8 +40,8 @@ export default function reducer(state = {}, action) {
       Object.keys(state).forEach(k => {
         for (let i = 0; i < forms.length; i++) {
           if (forms[i] === k) {
+            return;
           }
-          return;
         }
 
         newState[k] = state[k];
@@ -57,7 +57,7 @@ export default function reducer(state = {}, action) {
         [form]: {
           ...state[form],
           fields: { ...oldFields, ...fields },
-          errors: false,
+          errors: false
         }
       };
     }
