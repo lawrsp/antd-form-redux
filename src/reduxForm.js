@@ -11,7 +11,7 @@ const getDisplayName = Comp => Comp.displayName || Comp.name || 'Component';
 //form: String,  name of the form
 //initialValues: Object,  initial value of the form
 //initialValues : function
-const reduxForm = config => CompNode => {
+const reduxForm = (config, parentMapStateToProps, ...rest) => CompNode => {
   class Wrapped extends Component {
     componentDidMount() {
       var initialValues = config.initialValues;
@@ -31,11 +31,26 @@ const reduxForm = config => CompNode => {
   Wrapped.displayName = `withForm(${getDisplayName(CompNode)})`;
   hoistNonReactStatic(Wrapped, CompNode);
 
-  return connect(({ form }) => {
+  function mapStateToProps(store) {
+    const { form } = store;
     const formState = form[config.form] || {};
     const { fields = {}, ...others } = formState;
-    return { [config.form]: others, formFields: fields };
-  })(
+
+    if (parentMapStateToProps) {
+      return {
+        ...parentMapStateToProps(store),
+        [config.form]: others,
+        formFields: fields
+      };
+    }
+
+    return {
+      [config.form]: others,
+      formFields: fields
+    };
+  }
+
+  return connect(mapStateToProps, ...rest)(
     Form.create({
       onFieldsChange(props, changedFields) {
         props.dispatch(change(config.form, changedFields));
