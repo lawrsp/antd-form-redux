@@ -31,14 +31,14 @@ const reduxForm = (config, parentMapStateToProps, ...rest) => CompNode => {
   Wrapped.displayName = `withForm(${getDisplayName(CompNode)})`;
   hoistNonReactStatic(Wrapped, CompNode);
 
-  function mapStateToProps(store) {
+  function mapStateToProps(store, ownProps) {
     const { form } = store;
     const formState = form[config.form] || {};
     const { fields = {}, ...others } = formState;
 
     if (parentMapStateToProps) {
       return {
-        ...parentMapStateToProps(store),
+        ...parentMapStateToProps(store, ownProps),
         [config.form]: others,
         formFields: fields
       };
