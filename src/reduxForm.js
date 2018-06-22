@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Form } from 'antd';
 import { initialize, destroy, change } from './actions';
+import invariant from 'invariant';
 
 import hoistNonReactStatic from 'hoist-non-react-statics';
 
@@ -11,17 +12,22 @@ const getDisplayName = Comp => Comp.displayName || Comp.name || 'Component';
 //form: String,  name of the form
 //initialValues: Object,  initial value of the form
 //initialValues : function
-const reduxForm = (config, parentMapStateToProps, ...rest) => CompNode => {
+const reduxForm = ({ reducer = 'form', form, initialValues }) => CompNode => {
+  invariant(
+    form,
+    '[antd-form-redux] - You must supply a nonempty string "form" to the component'
+  );
+
   class Wrapped extends Component {
     componentDidMount() {
-      var initialValues = config.initialValues;
-      if (typeof initialValues === 'function') {
-        initialValues = config.initialValues(this.props);
+      let iv = initialValues;
+      if (typeof iv === 'function') {
+        iv = config.initialValues(this.props);
       }
-      this.props.dispatch(initialize(config.form, initialValues));
+      this.props.dispatch(initialize(form, iv));
     }
     componentWillUnmount() {
-      this.props.dispatch(destroy(config.form));
+      this.props.dispatch(destroy(form));
     }
     render() {
       return <CompNode {...this.props} />;
@@ -31,26 +37,18 @@ const reduxForm = (config, parentMapStateToProps, ...rest) => CompNode => {
   Wrapped.displayName = `withForm(${getDisplayName(CompNode)})`;
   hoistNonReactStatic(Wrapped, CompNode);
 
-  function mapStateToProps(store, ownProps) {
-    const { form } = store;
-    const formState = form[config.form] || {};
+  function mapStateToProps(store) {
+    const formAll = store[reducer];
+    const formState = formAll[form] || {};
     const { fields = {}, ...others } = formState;
 
-    if (parentMapStateToProps) {
-      return {
-        ...parentMapStateToProps(store, ownProps),
-        [config.form]: others,
-        formFields: fields
-      };
-    }
-
     return {
-      [config.form]: others,
+      [form]: others,
       formFields: fields
     };
   }
 
-  return connect(mapStateToProps, ...rest)(
+  return connect(mapStateToProps)(
     Form.create({
       onFieldsChange(props, changedFields) {
         props.dispatch(change(config.form, changedFields));
