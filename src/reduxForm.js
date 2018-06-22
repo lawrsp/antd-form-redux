@@ -22,7 +22,7 @@ const reduxForm = ({ reducer = 'form', form, initialValues }) => CompNode => {
     componentDidMount() {
       let iv = initialValues;
       if (typeof iv === 'function') {
-        iv = config.initialValues(this.props);
+        iv = initialValues(this.props);
       }
       this.props.dispatch(initialize(form, iv));
     }
@@ -51,7 +51,7 @@ const reduxForm = ({ reducer = 'form', form, initialValues }) => CompNode => {
   return connect(mapStateToProps)(
     Form.create({
       onFieldsChange(props, changedFields) {
-        props.dispatch(change(config.form, changedFields));
+        props.dispatch(change(form, changedFields));
       },
       mapPropsToFields(props) {
         const { formFields = {} } = props;
