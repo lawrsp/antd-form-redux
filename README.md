@@ -41,16 +41,39 @@ export default reduxForm({
 #### config:
 ##### form:  String 
 the name of the form data stored 
+##### formValuesKey: string
+the key of the form values in props, default is form in config
+##### formFieldsKey: string
+the key of the form fields in props, default is 'formFields'
+
 ##### initialValues: [key: value] 
 the initialValues
 
 #### the form data 
-you can get the form data represented by key named the form name
+default, you can get the form data represented by key named the form name
 ```
+reduxForm({
+  form: 'test',  
+})(.....)
+
 const { test } = this.props;
-// test.submitting : Bool,
-// test.submitFaild : Bool,
-// test.errors : Object
+
+```
+you also can specify a formValuesKey, so that you can get the data by it
+
+```
+reduxForm({
+  form: 'test',  
+  formValuesKey: "myFormValues"
+})(.....)
+const { myFormValues } = this.props;
+
+```
+some values often used:
+```
+myFormValues.submitting : Bool,
+myFormValues.submitFaild : Bool,
+myFormValues.errors : Object
 ```
 
 the errors will be setted by dispatch a stopSubmit(form, errors) action

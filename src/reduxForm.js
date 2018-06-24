@@ -12,7 +12,13 @@ const getDisplayName = Comp => Comp.displayName || Comp.name || 'Component';
 //form: String,  name of the form
 //initialValues: Object,  initial value of the form
 //initialValues : function
-const reduxForm = ({ reducer = 'form', form, initialValues }) => CompNode => {
+const reduxForm = ({
+  reducer = 'form',
+  form,
+  formValuesKey,
+  formFieldsKey = 'formFields',
+  initialValues
+}) => CompNode => {
   invariant(
     form,
     '[antd-form-redux] - You must supply a nonempty string "form" to the component'
@@ -42,9 +48,11 @@ const reduxForm = ({ reducer = 'form', form, initialValues }) => CompNode => {
     const formState = formAll[form] || {};
     const { fields = {}, ...others } = formState;
 
+    const key = formValuesKey || form;
+
     return {
-      [form]: others,
-      formFields: fields
+      [key]: others,
+      [formFieldsKey]: fields
     };
   }
 
@@ -54,7 +62,7 @@ const reduxForm = ({ reducer = 'form', form, initialValues }) => CompNode => {
         props.dispatch(change(form, changedFields));
       },
       mapPropsToFields(props) {
-        const { formFields = {} } = props;
+        const formFields = props[formFieldsKey] || {};
         return Object.keys(formFields).reduce(
           (o, i) => ({
             ...o,
