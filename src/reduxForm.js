@@ -44,7 +44,7 @@ const reduxForm = ({
       this.props.form.validateFields((err, values) => {
         if (!err) {
           // console.log('Received values of form: ', values);
-          handleSubmit(values);
+          onSubmit(values);
           return;
         }
 
