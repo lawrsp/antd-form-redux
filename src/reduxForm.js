@@ -8,6 +8,7 @@ import hoistNonReactStatic from 'hoist-non-react-statics';
 
 const getDisplayName = Comp => Comp.displayName || Comp.name || 'Component';
 const noop = () => {};
+
 //config:
 //form: String,  name of the form
 //initialValues: Object,  initial value of the form
@@ -17,6 +18,7 @@ const reduxForm = ({
   form,
   formValuesKey,
   formFieldsKey = 'formFields',
+  validateFieldsKey = 'validateFields',
   initialValues
 }) => CompNode => {
   invariant(
@@ -24,7 +26,7 @@ const reduxForm = ({
     '[antd-form-redux] - You must supply a nonempty string "form" to the component'
   );
 
-  class Wrapped extends Component {
+  class wrappedComp extends Component {
     componentDidMount() {
       let iv = initialValues;
       if (typeof iv === 'function') {
@@ -38,7 +40,7 @@ const reduxForm = ({
 
     handleSubmit = e => {
       e.preventDefault();
-      const { handleSubmit = noop, handleValidateError = noop } = this.props;
+      const { onSubmit = noop, onValidateError = noop } = this.props;
       this.props.form.validateFields((err, values) => {
         if (!err) {
           // console.log('Received values of form: ', values);
@@ -46,16 +48,24 @@ const reduxForm = ({
           return;
         }
 
-        handleValidateError(err);
+        onValidateError(err);
       });
     };
+
     render() {
-      return <CompNode {...this.props} handleSubmit={this.handleSubmit} />;
+      const addedProps = {
+        [validateFieldsKey]: this.props.form.validateFields
+      };
+      if (this.props.onSubmit) {
+        addedProps.onSubmit = this.handleSubmit;
+      }
+
+      return <CompNode {...this.props} {...addedProps} />;
     }
   }
 
-  Wrapped.displayName = `withForm(${getDisplayName(CompNode)})`;
-  hoistNonReactStatic(Wrapped, CompNode);
+  wrappedComp.displayName = `withForm(${getDisplayName(CompNode)})`;
+  hoistNonReactStatic(wrappedComp, CompNode);
 
   function mapStateToProps(store) {
     const formAll = store[reducer];
@@ -88,7 +98,7 @@ const reduxForm = ({
       onValuesChange(_, values) {
         console.log(values);
       }
-    })(Wrapped)
+    })(wrappedComp)
   );
 };
 
