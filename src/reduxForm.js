@@ -7,7 +7,7 @@ import invariant from 'invariant';
 import hoistNonReactStatic from 'hoist-non-react-statics';
 
 const getDisplayName = Comp => Comp.displayName || Comp.name || 'Component';
-
+const noop = () => {};
 //config:
 //form: String,  name of the form
 //initialValues: Object,  initial value of the form
@@ -35,8 +35,22 @@ const reduxForm = ({
     componentWillUnmount() {
       this.props.dispatch(destroy(form));
     }
+
+    handleSubmit = e => {
+      e.preventDefault();
+      const { handleSubmit = noop, handleValidateError = noop } = this.props;
+      this.props.form.validateFields((err, values) => {
+        if (!err) {
+          // console.log('Received values of form: ', values);
+          handleSubmit(values);
+          return;
+        }
+
+        handleValidateError(err);
+      });
+    };
     render() {
-      return <CompNode {...this.props} />;
+      return <CompNode {...this.props} handleSubmit={this.handleSubmit} />;
     }
   }
 
