@@ -72,18 +72,27 @@ export default function reducer(state = {}, action) {
       };
     }
     case FORM_STOP_SUBMIT: {
-      const { errors } = payload;
-      const newState = {
-        ...state,
-        [form]: {
-          ...state[form],
-          submitting: false
-        }
+      const newFormState = {
+        ...state[form],
+        submitting: false
       };
 
+      //support field error
       if (error) {
-        newState[form].errors = errors;
+        const { fields = [], ...errors } = payload;
+        newFormState.errors = errors;
+
+        fields.forEach(fe => {
+          const fieldInfo = newFormState.fields[fe.field] || {};
+          fieldInfo.errors = fieldInfo.errors || [];
+          fieldInfo.errors = [...fieldInfo.errors, fe];
+          newFormState.fields[fe.field] = fieldInfo;
+        });
       }
+      const newState = {
+        ...state,
+        [form]: newFormState
+      };
 
       console.log(newState);
 

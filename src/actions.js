@@ -39,11 +39,11 @@ export const change = (form, fields) => ({
   }
 });
 export const startSubmit = form => ({ type: FORM_SUBMIT, meta: { form } });
-export const stopSubmit = (form, errors) => ({
+export const stopSubmit = (form, err) => ({
   type: FORM_STOP_SUBMIT,
   meta: { form },
-  payload: { errors },
-  error: !!errors
+  payload: err,
+  error: !!err
 });
 
 export const setSubmitSucceeded = form => ({
