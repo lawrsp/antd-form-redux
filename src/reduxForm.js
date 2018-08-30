@@ -19,7 +19,8 @@ const reduxForm = ({
   formValuesKey,
   formFieldsKey = 'formFields',
   validateFieldsKey = 'validateFields',
-  initialValues
+  initialValues,
+  onSubmit
 }) => CompNode => {
   invariant(
     form,
@@ -40,11 +41,15 @@ const reduxForm = ({
 
     handleSubmit = e => {
       e.preventDefault();
-      const { onSubmit = noop, onValidateError = noop } = this.props;
+      const {
+        disptach,
+        onSubmit = onSubmit,
+        onValidateError = noop
+      } = this.props;
       this.props.form.validateFields((err, values) => {
         if (!err) {
           // console.log('Received values of form: ', values);
-          onSubmit(values);
+          onSubmit(values, disptach, this.props);
           return;
         }
 
