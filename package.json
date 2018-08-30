@@ -1,6 +1,6 @@
 {
   "name": "antd-form-redux",
-  "version": "3.0.17",
+  "version": "3.0.18",
   "description": "connect antd form to redux",
   "main": "lib/index.js",
   "scripts": {
