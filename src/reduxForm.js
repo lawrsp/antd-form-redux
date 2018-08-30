@@ -41,11 +41,7 @@ const reduxForm = ({
 
     handleSubmit = e => {
       e.preventDefault();
-      const {
-        disptach,
-        onSubmit = onSubmit,
-        onValidateError = noop
-      } = this.props;
+      const { disptach, onSubmit = noop, onValidateError = noop } = this.props;
       this.props.form.validateFields((err, values) => {
         if (!err) {
           // console.log('Received values of form: ', values);
@@ -72,17 +68,23 @@ const reduxForm = ({
   wrappedComp.displayName = `withForm(${getDisplayName(CompNode)})`;
   hoistNonReactStatic(wrappedComp, CompNode);
 
-  function mapStateToProps(store) {
+  function mapStateToProps(store, props) {
     const formAll = store[reducer];
     const formState = formAll[form] || {};
     const { fields = {}, ...others } = formState;
 
     const key = formValuesKey || form;
 
-    return {
+    const mergedProps = {
       [key]: others,
       [formFieldsKey]: fields
     };
+
+    if (onSubmit && !props.onSubmit) {
+      mergedProps.onSubmit = onSubmit;
+    }
+
+    return mergedProps;
   }
 
   return connect(mapStateToProps)(
