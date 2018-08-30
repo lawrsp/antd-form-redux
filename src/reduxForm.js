@@ -77,12 +77,9 @@ const reduxForm = ({
 
     const mergedProps = {
       [key]: others,
-      [formFieldsKey]: fields
+      [formFieldsKey]: fields,
+      onSubmit: props.onSubmit || onSubmit
     };
-
-    if (onSubmit && !props.onSubmit) {
-      mergedProps.onSubmit = onSubmit;
-    }
 
     return mergedProps;
   }
@@ -94,13 +91,14 @@ const reduxForm = ({
       },
       mapPropsToFields(props) {
         const formFields = props[formFieldsKey] || {};
-        return Object.keys(formFields).reduce(
+        const result = Object.keys(formFields).reduce(
           (o, i) => ({
             ...o,
             [i]: Form.createFormField(formFields[i])
           }),
           {}
         );
+        return result;
       },
       onValuesChange(_, values) {
         console.log(values);
