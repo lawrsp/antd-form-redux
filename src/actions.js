@@ -21,6 +21,7 @@ export const initialize = (form, data) => {
       {}
     );
     action.payload.fields = fields;
+    action.payload.initialValues = data;
   }
 
   return action;

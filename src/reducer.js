@@ -28,10 +28,10 @@ export default function reducer(state = {}, action) {
 
   switch (type) {
     case FORM_INIT: {
-      const { fields } = payload;
+      const { fields, initialValues } = payload;
       return {
         ...state,
-        [form]: { fields }
+        [form]: { fields, initialValues }
       };
     }
     case FORM_DESTROY: {
