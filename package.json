@@ -1,6 +1,6 @@
 {
   "name": "antd-form-redux",
-  "version": "3.0.25",
+  "version": "3.0.26",
   "description": "reduxForm() API for antd Form connect to redux, just likes redux-form",
   "browser": "lib/index.js",
   "scripts": {
