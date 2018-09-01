@@ -1,12 +1,16 @@
-# antd-form-redux  for antd-3.0.0-rc
+# Use reduxForm() API for antd >= 3
 
-## Introduction
-connect antd-form to redux
-use like redux-form's "reduxForm" HOC
 
+## Install
+
+```
+npm install antd-form-redux
+```
 
 ## Usage 
-### 1. add reducer to your reducers
+connect antd-form to redux use like redux-form's like "reduxForm" HOC. You just need 2 steps:
+
+### Step-1. add reducer to your reducers
 ```
 import { combineReducers } from 'redux';
 import { reducer as formReducer } from 'fantd-form-redux';
@@ -19,7 +23,7 @@ const rootReducer = combineReducers({
 
 ```
 
-### 2. Use reduxForm(config) to connect component 
+### Step-2. Use reduxForm(config) to connect component 
 ```
 class NormalAntdForm extend Compoent {
   ...
@@ -38,8 +42,14 @@ export default reduxForm({
 })(NormalAntdForm);
 
 ```
-#### config:
-try compatible with redux-form, now support configures:
+
+Note: you should also use the antd getFieldDecorator to do field bind and value check
+there is no support like redux-form's Field or validate.
+
+## Configure options:
+
+This project make effort to use antd likes redux-form, these are supported configures now: 
+
 #### form : String
 #### initialValues : Object
 #### enableReinitialize : Bool
@@ -55,8 +65,9 @@ try compatible with redux-form, now support configures:
 #### onSubmit : Function(values, dispatch, props)
 
 
+## Action creators
 
-### 3. use action creators if you need:
+There is also supplied redux-form likes action creators:
 
 #### initialize: (form, data) 
 data : { fields, ....} 
@@ -80,10 +91,14 @@ set submitFailed to true
 #### clearSubmitErrors(form)
 delete all errors
 
+Note: 
+if you want to get/set the submitting state, server validate errors to the form reducer, 
+you would dispatch actions on your own, this is usually done in side effect handlers,
+such as rudux-thunk, redux-promise, redux-saga, redux-observable, etc.
 
 ## Example
 
-this is a example from antd docs: 
+this is a example according to antd docs: 
 
 ```
 import React, {Component} from 'react'
@@ -91,14 +106,6 @@ import { Form, Icon, Input, Button, Checkbox } from 'antd';
 const FormItem = Form.Item;
 
 class NormalLoginForm extends React.Component {
-  handleSubmit = (e) => {
-    e.preventDefault();
-    this.props.form.validateFields((err, values) => {
-      if (!err) {
-        console.log('Received values of form: ', values);
-      }
-    });
-  }
   render() {
     const {login} = this.props;
     const { getFieldDecorator } = this.props.form;
@@ -143,9 +150,15 @@ class NormalLoginForm extends React.Component {
 
 const WrappedNormalLoginForm = reduxForm({
   form: 'login',  //the name of the form data store 
+  onSubmit: function(values, dispatch, props) {
+      //do with values, dispatch , props
+      console.log('Received values of form: ', values);
+  }
 })(NormalLoginForm);
 
 ```
+
+Note: you can also give onSubmit as props from parent Component.
 
 
 

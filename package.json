@@ -1,20 +1,25 @@
 {
   "name": "antd-form-redux",
   "version": "3.0.22",
-  "description": "connect antd form to redux",
+  "description": "user redux-form's reduxForm like api with antd Form",
   "main": "lib/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build-lib": "rimraf lib && babel src --copy-files --extensions .js --out-dir lib"
   },
+  "files": [
+    "lib",
+    "src"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/lawrsp/antd-form-redux.git"
   },
   "keywords": [
+    "react",
     "antd",
-    "form",
-    "redux"
+    "redux",
+    "form"
   ],
   "author": "lawrsp",
   "license": "MIT",
@@ -35,14 +40,12 @@
     "react": "^16.1.0",
     "rimraf": "^2.6.2"
   },
-  "dependencies": {
-  },
   "peerDependencies": {
-    "hoist-non-react-statics": "^2.3.1",
-    "invariant": "^2.2.4",
-    "lodash": "^4.17.10",
-    "reselect": "^3.0.1",
-    "antd": "^3.0.0",
+    "hoist-non-react-statics": "*",
+    "invariant": "*",
+    "lodash": "*",
+    "reselect": "*",
+    "antd": ">=3",
     "react": ">=16",
     "react-redux": ">=4"
   }
