@@ -8,7 +8,9 @@ npm install antd-form-redux
 ```
 
 ## Usage 
-connect antd-form to redux use like redux-form's like "reduxForm" HOC. You just need 2 steps:
+Connect antd form with redux use "reduxForm" HOC like use redux-form. 
+
+You just need 2 steps:
 
 ### Step-1. add reducer to your reducers
 ```
