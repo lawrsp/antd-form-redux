@@ -27,6 +27,8 @@ const rootReducer = combineReducers({
 
 ### Step-2. Use reduxForm(config) to connect component 
 ```
+import { reduxForm } from 'fantd-form-redux';
+
 class NormalAntdForm extend Compoent {
   ...
   render() {
