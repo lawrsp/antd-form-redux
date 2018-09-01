@@ -8,7 +8,7 @@ npm install antd-form-redux
 ```
 
 ## Usage 
-Connect antd form with redux use "reduxForm" HOC like use redux-form. 
+Connect antd form with redux use "reduxForm" HOC likes the package redux-form. 
 
 You just need 2 steps:
 
@@ -27,7 +27,7 @@ const rootReducer = combineReducers({
 
 ### Step-2. Use reduxForm(config) to connect component 
 ```
-import { reduxForm } from 'fantd-form-redux';
+import { reduxForm } from 'antd-form-redux';
 
 class NormalAntdForm extend Compoent {
   ...
@@ -106,6 +106,7 @@ this is a example according to antd docs:
 
 ```
 import React, {Component} from 'react'
+import { reduxForm } from 'antd-form-redux';
 import { Form, Icon, Input, Button, Checkbox } from 'antd';
 const FormItem = Form.Item;
 
