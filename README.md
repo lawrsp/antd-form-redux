@@ -39,44 +39,21 @@ export default reduxForm({
 
 ```
 #### config:
-##### form:  String 
-the name of the form data stored 
-##### formValuesKey: string
-the key of the form values in props, default is form in config
-##### formFieldsKey: string
-the key of the form fields in props, default is 'formFields'
+try compatible with redux-form, now support configures:
+#### form : String
+#### initialValues : Object
+#### enableReinitialize : Bool
+#### keepDirtyOnReinitialize : Bool
+#### updateUnregisteredFields : Bool
+#### destroyOnUnmount : Bool
+#### forceUnregisterOnUnmount : Bool
+#### getFormState : Function(state) => formState
+#### onChange : Function(values, dispatch, props, previousValues)
+#### immutableProps : [String],
+#### onSubmitFail : Function(errors, dispatch, submitError, props)
+#### onSubmitSuccess : Function(result, dispatch, props)
+#### onSubmit : Function(values, dispatch, props)
 
-##### initialValues: [key: value] 
-the initialValues
-
-#### the form data 
-default, you can get the form data represented by key named the form name
-```
-reduxForm({
-  form: 'test',  
-})(.....)
-
-const { test } = this.props;
-
-```
-you also can specify a formValuesKey, so that you can get the data by it
-
-```
-reduxForm({
-  form: 'test',  
-  formValuesKey: "myFormValues"
-})(.....)
-const { myFormValues } = this.props;
-
-```
-some values often used:
-```
-myFormValues.submitting : Bool,
-myFormValues.submitFaild : Bool,
-myFormValues.errors : Object
-```
-
-the errors will be setted by dispatch a stopSubmit(form, errors) action
 
 
 ### 3. use action creators if you need:
