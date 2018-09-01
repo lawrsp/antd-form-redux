@@ -1,6 +1,6 @@
 {
   "name": "antd-form-redux",
-  "version": "3.0.22",
+  "version": "3.0.23",
   "description": "user redux-form's reduxForm like api with antd Form",
   "main": "lib/index.js",
   "scripts": {
@@ -50,3 +50,4 @@
     "react-redux": ">=4"
   }
 }
+
