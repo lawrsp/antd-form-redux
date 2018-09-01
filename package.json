@@ -2,7 +2,7 @@
   "name": "antd-form-redux",
   "version": "3.0.25",
   "description": "reduxForm() API for antd Form connect to redux, just likes redux-form",
-  "main": "lib/index.js",
+  "browser": "lib/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build-lib": "rimraf lib && babel src --copy-files --extensions .js --out-dir lib"
@@ -13,7 +13,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/lawrsp/antd-form-redux.git"
+    "url": "https://github.com/lawrsp/antd-form-redux.git"
   },
   "keywords": [
     "react",
