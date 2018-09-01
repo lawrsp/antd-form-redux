@@ -7,8 +7,8 @@ import invariant from 'invariant';
 import isEqual from 'lodash/isEqual';
 import isEmpty from 'lodash/isEmpty';
 import ObjectKeys from 'lodash/keys';
-
 import { initialize, destroy, change } from './actions';
+import { getFieldsFromInitialValues } from './selectors';
 
 const getDisplayName = Comp => Comp.displayName || Comp.name || 'Component';
 const noop = () => {};
@@ -23,14 +23,24 @@ const compareEqual = (a, b, imuutables = []) => {
 
   for (let i = 0; i < keysA.length; i++) {
     const k = keysA[i];
+    const elmA = a[k];
+    const elmB = b[k];
+
     if (imuutables.indexOf(k) >= 0) {
-      if (a[k] != b[k]) {
+      if (elmA !== elmB) {
         return false;
       }
       continue;
     }
 
-    if (!isEqual(a[k], b[k])) {
+    if (typeof elmA === 'object') {
+      if (!isEqual(elmA, elmB)) {
+        return false;
+      }
+      continue;
+    }
+
+    if (elmA !== elmB) {
       return false;
     }
   }
@@ -71,11 +81,9 @@ const reduxForm = ({
 
   class wrappedComp extends Component {
     componentDidMount() {
-      const iv = this.props.initialValues || initialValues;
+      const iv = initialValues || this.props.initialValues;
       if (iv) {
         this.props.dispatch(initialize(form, initialValues));
-        const form = this.props;
-        form.setFieldsValue(initialValues);
       }
     }
 
@@ -105,7 +113,6 @@ const reduxForm = ({
         return;
       }
 
-      const form = this.props;
       const fields = formState.fields;
       let updateValues = iv;
       if (keepDirtyOnReinitialize) {
@@ -116,12 +123,15 @@ const reduxForm = ({
           }
         });
       }
+
+      // const updateFields = getFieldsFromInitialValues(updateValues);
       this.props.form.setFieldsValue(updateValues);
+      this.props.dispatch(change(form, {}, iv));
     }
 
     handleSubmit = e => {
       e.preventDefault();
-      const { disptach, onSubmit = noop, onValidateError = noop } = this.props;
+      const { dispatch, onSubmit = noop, onValidateError = noop } = this.props;
       this.props.form.validateFields((err, values) => {
         if (err) {
           onSubmitFail(err, dispatch, err, this.props);
@@ -129,8 +139,8 @@ const reduxForm = ({
           return;
         }
         try {
-          onSubmit(values, disptach, this.props);
-        } catch (errors) {
+          onSubmit(values, dispatch, this.props);
+        } catch (err) {
           onSubmitFail(err, dispatch, err, this.props);
           return;
         }
@@ -148,7 +158,6 @@ const reduxForm = ({
   hoistNonReactStatic(wrappedComp, CompNode);
 
   function mapStateToProps(store, props) {
-    const formAll = store[reducer];
     return {
       formState: getFormStateFromStore(store, form),
       onSubmit: props.onSubmit || onSubmit

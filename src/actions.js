@@ -1,3 +1,5 @@
+import { getFieldsFromInitialValues } from './selectors';
+
 const prefix = '@antd-form-redux';
 export const FORM_INIT = `${prefix}/init`;
 export const FORM_DESTROY = `${prefix}/destroy`;
@@ -16,11 +18,7 @@ export const initialize = (form, data) => {
   };
 
   if (typeof data === 'object') {
-    const fields = Object.keys(data).reduce(
-      (o, k) => ({ ...o, [k]: { value: data[k], name: k } }),
-      {}
-    );
-    action.payload.fields = fields;
+    action.payload.fields = getFieldsFromInitialValues(data);
     action.payload.initialValues = data;
   }
 
@@ -32,11 +30,12 @@ export const destroy = (...forms) => ({
   meta: { forms }
 });
 
-export const change = (form, fields) => ({
+export const change = (form, fields, initialValues) => ({
   type: FORM_CHANGE,
   meta: { form },
   payload: {
-    fields
+    fields,
+    initialValues
   }
 });
 export const startSubmit = form => ({ type: FORM_SUBMIT, meta: { form } });

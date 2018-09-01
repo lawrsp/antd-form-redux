@@ -50,13 +50,15 @@ export default function reducer(state = {}, action) {
       return newState;
     }
     case FORM_CHANGE: {
-      const { fields } = payload;
-      const oldFields = (state[form] || {}).fields;
+      const { fields, initialValues } = payload;
+      const old = state[form] || {};
+      const oldFields = old.fields || {};
       return {
         ...state,
         [form]: {
           ...state[form],
           fields: { ...oldFields, ...fields },
+          initialValues: initialValues || old.initialValues,
           errors: false
         }
       };
@@ -94,7 +96,7 @@ export default function reducer(state = {}, action) {
         [form]: newFormState
       };
 
-      console.log(newState);
+      // console.log(newState);
 
       return newState;
     }
