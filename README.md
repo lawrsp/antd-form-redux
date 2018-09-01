@@ -1,4 +1,4 @@
-# Use reduxForm() API for antd >= 3
+# Use reduxForm() API for antd
 
 
 ## Install
