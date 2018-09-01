@@ -4,49 +4,17 @@ import { createSelector } from 'reselect';
 import hoistNonReactStatic from 'hoist-non-react-statics';
 import Form from 'antd/lib/form';
 import invariant from 'invariant';
-import isEqual from 'lodash/isEqual';
 import isEmpty from 'lodash/isEmpty';
-import ObjectKeys from 'lodash/keys';
 import { initialize, destroy, change } from './actions';
-import { getFieldsFromInitialValues } from './selectors';
+import {
+  getFieldsFromFlatValues,
+  compareEqual,
+  filterByDirtyFields,
+  objectMap
+} from './utils';
 
 const getDisplayName = Comp => Comp.displayName || Comp.name || 'Component';
 const noop = () => {};
-
-const compareEqual = (a, b, imuutables = []) => {
-  const keysA = ObjectKeys(a);
-  const keysB = ObjectKeys(b);
-
-  if (keysA.length != keysB.length) {
-    return false;
-  }
-
-  for (let i = 0; i < keysA.length; i++) {
-    const k = keysA[i];
-    const elmA = a[k];
-    const elmB = b[k];
-
-    if (imuutables.indexOf(k) >= 0) {
-      if (elmA !== elmB) {
-        return false;
-      }
-      continue;
-    }
-
-    if (typeof elmA === 'object') {
-      if (!isEqual(elmA, elmB)) {
-        return false;
-      }
-      continue;
-    }
-
-    if (elmA !== elmB) {
-      return false;
-    }
-  }
-
-  return true;
-};
 
 //config:
 //form: String,  name of the form
@@ -74,16 +42,11 @@ const reduxForm = ({
     '[antd-form-redux] - You must supply a nonempty string "form" to the component'
   );
 
-  const getFormStateFromStore = createSelector(
-    getFormState,
-    state => state[form] || {}
-  );
-
   class wrappedComp extends Component {
     componentDidMount() {
       const iv = initialValues || this.props.initialValues;
       if (iv) {
-        this.props.dispatch(initialize(form, initialValues));
+        this.props.dispatch(initialize(form, iv));
       }
     }
 
@@ -97,7 +60,6 @@ const reduxForm = ({
       // enableReinitialize = false,
       // keepDirtyOnReinitialize = false,
       // immutableProps
-
       if (!enableReinitialize) {
         return;
       }
@@ -109,29 +71,35 @@ const reduxForm = ({
         return;
       }
 
+      //
       if (iv === lastInitialValues) {
         return;
       }
 
-      if (compareEqual(iv, lastInitialValues, immutableProps)) {
+      // compare
+      if (!isEmpty(lastInitialValues)) {
+        if (compareEqual(iv, lastInitialValues, immutableProps)) {
+          return;
+        }
+      }
+
+      let updateValues = iv;
+      if (keepDirtyOnReinitialize) {
+        updateValues = filterByDirtyFields(formState.fields)(updateValues);
+      }
+
+      if (isEmpty(updateValues)) {
         return;
       }
 
-      const fields = formState.fields;
-      let updateValues = iv;
-      if (keepDirtyOnReinitialize) {
-        ObjectKeys(fields).forEach(k => {
-          const fd = fields[k];
-          if (fd.dirty) {
-            delete updateValues[k];
-          }
-        });
-      }
-
-      // const updateFields = getFieldsFromInitialValues(updateValues);
-      this.props.form.setFieldsValue(updateValues);
-      this.props.dispatch(change(form, {}, iv));
+      // this.props.form.setFieldsValue(updateValues);
+      const updateFields = getFieldsFromFlatValues(updateValues);
+      this.props.dispatch(change(form, updateFields, iv));
     }
+
+    handleInitialize = values => {
+      this.props.dispatch(initialize(form, values));
+    };
 
     handleSubmit = e => {
       e.preventDefault();
@@ -156,17 +124,35 @@ const reduxForm = ({
       });
     };
 
+    handleReset = () => {
+      const formState = this.props.formState;
+      const iv = formState.initialValues || {};
+      this.props.dispatch(initialize(form, iv));
+    };
+
     render() {
-      return <CompNode {...this.props} onSubmit={this.handleSubmit} />;
+      return (
+        <CompNode
+          {...this.props}
+          onSubmit={this.handleSubmit}
+          reset={this.handleReset}
+          initialize={this.handleInitialize}
+        />
+      );
     }
   }
 
   wrappedComp.displayName = `withForm(${getDisplayName(CompNode)})`;
   hoistNonReactStatic(wrappedComp, CompNode);
 
+  const getFormStateFormStore = store => {
+    const state = getFormState(store);
+    return state[form] || {};
+  };
+
   function mapStateToProps(store, props) {
     return {
-      formState: getFormStateFromStore(store, form),
+      formState: getFormStateFormStore(store),
       onSubmit: props.onSubmit || onSubmit
     };
   }
@@ -187,14 +173,7 @@ const reduxForm = ({
       mapPropsToFields(props) {
         const { formState = {} } = props;
         const { fields = {} } = formState;
-        const maps = ObjectKeys(fields).reduce(
-          (o, k) => ({
-            ...o,
-            [k]: Form.createFormField(fields[k])
-          }),
-          {}
-        );
-
+        const maps = objectMap(fields, v => Form.createFormField(v));
         return maps;
       },
       onValuesChange(props, values, allValues) {

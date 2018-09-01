@@ -1,5 +1,3 @@
-import { getFieldsFromInitialValues } from './selectors';
-
 const prefix = '@antd-form-redux';
 export const FORM_INIT = `${prefix}/init`;
 export const FORM_DESTROY = `${prefix}/destroy`;
@@ -10,17 +8,12 @@ export const FORM_CLEAR_SUBMIT_ERRORS = `${prefix}/clear_submit_errors`;
 export const FORM_SUBMIT_FAILED = `${FORM_SUBMIT}/fail`;
 export const FORM_SUBMIT_SUCCEEDED = `${FORM_SUBMIT}/success`;
 
-export const initialize = (form, data) => {
+export const initialize = (form, initialValues = {}) => {
   const action = {
     type: FORM_INIT,
     meta: { form },
-    payload: {}
+    payload: { initialValues }
   };
-
-  if (typeof data === 'object') {
-    action.payload.fields = getFieldsFromInitialValues(data);
-    action.payload.initialValues = data;
-  }
 
   return action;
 };

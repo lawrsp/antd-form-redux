@@ -100,6 +100,15 @@ if you want to get/set the submitting state, server validate errors to the form 
 you would dispatch actions on your own, this is usually done in side effect handlers,
 such as rudux-thunk, redux-promise, redux-saga, redux-observable, etc.
 
+## Props
+The props listed here are the props that generated to give to your decorated form component. 
+
+### reset : Function()
+reset the form values to initialValues
+
+### initialize : Function(values)
+initialize the form values to values
+
 ## Example
 
 this is a example according to antd docs: 

@@ -9,6 +9,12 @@ import {
   FORM_CLEAR_SUBMIT_ERRORS
 } from './actions';
 
+import {
+  getFieldsFromFlatValues,
+  mergeFields,
+  mergeFormErrors,
+  clearFieldsErrors
+} from './utils';
 /*
 state = {
   'some form name': {
@@ -26,26 +32,32 @@ export default function reducer(state = {}, action) {
   const { type, payload, meta = {}, error = false } = action;
   const { form } = meta;
 
+  // actions will create form data:
   switch (type) {
     case FORM_INIT: {
-      const { fields, initialValues } = payload;
+      const { initialValues } = payload;
+      const newFields = getFieldsFromFlatValues(initialValues);
+      const fields = mergeFields(state.fields, newFields);
       return {
         ...state,
         [form]: { fields, initialValues }
       };
     }
+  }
+
+  // actions would not create form data:
+  if (!state[form]) {
+    return state;
+  }
+
+  switch (type) {
     case FORM_DESTROY: {
       const { forms } = meta;
-      const newState = {};
-      Object.keys(state).forEach(k => {
-        for (let i = 0; i < forms.length; i++) {
-          if (forms[i] === k) {
-            return;
-          }
-        }
+      const newState = { ...state };
 
-        newState[k] = state[k];
-      });
+      for (let i = 0; i < forms.length; i++) {
+        delete newState[forms[i]];
+      }
 
       return newState;
     }
@@ -53,14 +65,20 @@ export default function reducer(state = {}, action) {
       const { fields, initialValues } = payload;
       const old = state[form] || {};
       const oldFields = old.fields || {};
+      const merged = mergeFields(oldFields, fields);
+
+      const nForm = {
+        ...state[form],
+        fields: merged,
+        errors: false
+      };
+
+      if (initialValues) {
+        nForm.initialValues = initialValues;
+      }
       return {
         ...state,
-        [form]: {
-          ...state[form],
-          fields: { ...oldFields, ...fields },
-          initialValues: initialValues || old.initialValues,
-          errors: false
-        }
+        [form]: nForm
       };
     }
 
@@ -74,31 +92,23 @@ export default function reducer(state = {}, action) {
       };
     }
     case FORM_STOP_SUBMIT: {
-      const newFormState = {
-        ...state[form],
-        submitting: false
-      };
-
       //support field error
       if (error) {
         const { fields = [], ...errors } = payload;
-        newFormState.errors = errors;
-
-        fields.forEach(fe => {
-          const fieldInfo = newFormState.fields[fe.field] || {};
-          fieldInfo.errors = fieldInfo.errors || [];
-          fieldInfo.errors = [...fieldInfo.errors, fe];
-          newFormState.fields[fe.field] = fieldInfo;
-        });
+        const nState = mergeFormErrors(state[form], fields, errors);
+        nState.submitting = false;
+        return {
+          ...state,
+          [form]: nState
+        };
       }
-      const newState = {
+      return {
         ...state,
-        [form]: newFormState
+        [form]: {
+          ...state[form],
+          submitting: false
+        }
       };
-
-      // console.log(newState);
-
-      return newState;
     }
     case FORM_SUBMIT_FAILED: {
       return {
@@ -119,10 +129,12 @@ export default function reducer(state = {}, action) {
       };
     }
     case FORM_CLEAR_SUBMIT_ERRORS: {
+      const formData = state[form];
       return {
         ...state,
         [form]: {
-          ...state[form],
+          ...formData,
+          fields: clearFieldsErrors(formData.fields),
           submitFailed: false,
           errors: false
         }
