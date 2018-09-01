@@ -109,6 +109,10 @@ const reduxForm = ({
         return;
       }
 
+      if (iv === lastInitialValues) {
+        return;
+      }
+
       if (compareEqual(iv, lastInitialValues, immutableProps)) {
         return;
       }
@@ -131,7 +135,10 @@ const reduxForm = ({
 
     handleSubmit = e => {
       e.preventDefault();
-      const { dispatch, onSubmit = noop, onValidateError = noop } = this.props;
+      const { dispatch, onValidateError = noop } = this.props;
+
+      const theOnSubmit = this.props.onSubmit || noop;
+
       this.props.form.validateFields((err, values) => {
         if (err) {
           onSubmitFail(err, dispatch, err, this.props);
@@ -139,7 +146,7 @@ const reduxForm = ({
           return;
         }
         try {
-          onSubmit(values, dispatch, this.props);
+          theOnSubmit(values, dispatch, this.props);
         } catch (err) {
           onSubmitFail(err, dispatch, err, this.props);
           return;
