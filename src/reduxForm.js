@@ -23,7 +23,6 @@ const noop = () => {};
 const reduxForm = ({
   reducer = 'form',
   form,
-  formValuesKey,
   initialValues = false,
   enableReinitialize = false,
   keepDirtyOnReinitialize = false,
@@ -184,3 +183,4 @@ const reduxForm = ({
 };
 
 export default reduxForm;
+

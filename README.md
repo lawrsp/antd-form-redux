@@ -15,7 +15,7 @@ You just need 2 steps:
 ### Step-1. add reducer to your reducers
 ```
 import { combineReducers } from 'redux';
-import { reducer as formReducer } from 'fantd-form-redux';
+import { reducer as formReducer } from 'antd-form-redux';
 
 //import other reducers
 const rootReducer = combineReducers({

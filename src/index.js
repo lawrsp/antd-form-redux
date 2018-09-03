@@ -1,3 +1,3 @@
-export { default as reduxForm } from './reduxForm';
-export { default as reducer } from './reducer';
 export * from './actions';
+export { default as reducer } from './reducer';
+export { default as reduxForm } from './reduxForm';
