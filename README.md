@@ -54,26 +54,39 @@ there is no support like redux-form's Field or validate.
 
 This project make effort to use antd likes redux-form, these are supported configures now: 
 
-#### form : String
-#### initialValues : Object
-#### enableReinitialize : Bool
-#### keepDirtyOnReinitialize : Bool
-#### updateUnregisteredFields : Bool
-#### destroyOnUnmount : Bool
-#### forceUnregisterOnUnmount : Bool
-#### getFormState : Function(state) => formState
-#### onChange : Function(values, dispatch, props, previousValues)
-#### immutableProps : [String],
-#### onSubmitFail : Function(errors, dispatch, submitError, props)
-#### onSubmitSuccess : Function(result, dispatch, props)
-#### onSubmit : Function(values, dispatch, props)
+#### form : String [required]
+#### Object<String, String> [optional]
+#### enableReinitialize : boolean [optional] 
+#### keepDirtyOnReinitialize : boolean [optional] 
+#### destroyOnUnmount : boolean [optional]
+#### forceUnregisterOnUnmount : boolean [optional]
+#### getFormState : Function [optional]
+#### onChange : Function [optional]  
+- values : Object
+- dispatch : Function
+- props : Object
+- previousValues : Object
+#### immutableProps : Array<String> [optional]
+#### onSubmitFail : Function 
+- errors : Object
+- dispatch : Function
+- submitError : Error
+- props : Object
+#### onSubmitSuccess : Function [optional]
+- result : Object
+- dispatch : Function
+- props : Object 
+#### onSubmit : Function
+- values : Object
+- dispatch : Function
+- props : Object
 
 
 ## Action creators
 
 There is also supplied redux-form likes action creators:
 
-#### initialize: (form, data) 
+#### initialize(form, data) 
 data : { fields, ....} 
 use fields to set initialValues, you donnot use this action usually
 
@@ -95,7 +108,8 @@ set submitFailed to true
 #### clearSubmitErrors(form)
 delete all errors
 
-Note: 
+
+Note:
 if you want to get/set the submitting state, server validate errors to the form reducer, 
 you would dispatch actions on your own, this is usually done in side effect handlers,
 such as rudux-thunk, redux-promise, redux-saga, redux-observable, etc.
@@ -103,7 +117,7 @@ such as rudux-thunk, redux-promise, redux-saga, redux-observable, etc.
 ## Props
 The props listed here are the props that generated to give to your decorated form component. 
 
-### reset : Function()
+### reset : Function  
 reset the form values to initialValues
 
 ### initialize : Function(values)
