@@ -3,7 +3,7 @@
 
 ## Install
 
-```
+``` 
 npm install antd-form-redux
 ```
 
@@ -13,7 +13,8 @@ Connect antd form with redux use "reduxForm" HOC likes the package redux-form.
 You just need 2 steps:
 
 ### Step-1. add reducer to your reducers
-```
+
+```javascript
 import { combineReducers } from 'redux';
 import { reducer as formReducer } from 'antd-form-redux';
 
@@ -26,18 +27,18 @@ const rootReducer = combineReducers({
 ```
 
 ### Step-2. Use reduxForm(config) to connect component 
-```
+```javascript
 import { reduxForm } from 'antd-form-redux';
 
 class NormalAntdForm extend Compoent {
-  ...
+  // ...
   render() {
-    ...
+    // ...
     const { test } = this.props;
-    const { getFieldDecorator } = this.props.form;  
+    const { getFieldDecorator } = this.props.form;
     // use antd's pattern :
     // getFieldDecorator('fileds', .....)
-    ...
+    // ...
   }
 }
 
@@ -61,11 +62,11 @@ This project make effort to use antd likes redux-form, these are supported confi
 #### destroyOnUnmount : boolean [optional]
 #### forceUnregisterOnUnmount : boolean [optional]
 #### getFormState : Function [optional]
-#### onChange : Function [optional]  
+#### onChange : Function [optional]
 - values : Object
 - dispatch : Function
 - props : Object
-- previousValues : Object
+- previousValues : Object 
 #### immutableProps : Array<String> [optional]
 #### onSubmitFail : Function 
 - errors : Object
@@ -117,7 +118,7 @@ such as rudux-thunk, redux-promise, redux-saga, redux-observable, etc.
 ## Props
 The props listed here are the props that generated to give to your decorated form component. 
 
-### reset : Function  
+### reset : Function
 reset the form values to initialValues
 
 ### initialize : Function(values)
@@ -127,7 +128,7 @@ initialize the form values to values
 
 this is a example according to antd docs: 
 
-```
+```javascript
 import React, {Component} from 'react'
 import { reduxForm } from 'antd-form-redux';
 import { Form, Icon, Input, Button, Checkbox } from 'antd';
@@ -187,6 +188,4 @@ const WrappedNormalLoginForm = reduxForm({
 ```
 
 Note: you can also give onSubmit as props from parent Component.
-
-
 
