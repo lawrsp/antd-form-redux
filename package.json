@@ -1,7 +1,7 @@
 {
   "name": "antd-form-redux",
-  "version": "3.0.26",
-  "description": "reduxForm() API for antd Form connect to redux, just likes redux-form",
+  "version": "3.0.27",
+  "description": "connect antd Form to redux with one API. compare to redux-form",
   "browser": "lib/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -50,3 +50,4 @@
     "react-redux": ">=4"
   }
 }
+

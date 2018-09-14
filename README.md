@@ -1,14 +1,16 @@
-# Use reduxForm() API for antd
+# Connect antd Form to redux
 
 
 ## Install
 
-``` 
-npm install antd-form-redux
+```
+npm install antd-form-redux --save
 ```
 
-## Usage 
-Connect antd form with redux use "reduxForm" HOC likes the package redux-form. 
+## Usage
+Connect antd Form to redux use "reduxForm" HOC.
+If you are familiar with redux-form, you will find it very the same.
+If you are new to Form and redux, it is also very simple since it just use one API.
 
 You just need 2 steps:
 
@@ -26,7 +28,7 @@ const rootReducer = combineReducers({
 
 ```
 
-### Step-2. Use reduxForm(config) to connect component 
+### Step-2. Use reduxForm(config) to connect component
 ```javascript
 import { reduxForm } from 'antd-form-redux';
 
@@ -43,7 +45,7 @@ class NormalAntdForm extend Compoent {
 }
 
 export default reduxForm({
-  form: 'test',  //the name of the form data store 
+  form: 'test',  //the name of the form data store
 })(NormalAntdForm);
 
 ```
@@ -53,12 +55,12 @@ there is no support like redux-form's Field or validate.
 
 ## Configure options:
 
-This project make effort to use antd likes redux-form, these are supported configures now: 
+This project make effort to use antd likes redux-form, these are supported configures now:
 
 #### form : String [required]
 #### Object<String, String> [optional]
-#### enableReinitialize : boolean [optional] 
-#### keepDirtyOnReinitialize : boolean [optional] 
+#### enableReinitialize : boolean [optional]
+#### keepDirtyOnReinitialize : boolean [optional]
 #### destroyOnUnmount : boolean [optional]
 #### forceUnregisterOnUnmount : boolean [optional]
 #### getFormState : Function [optional]
@@ -66,9 +68,9 @@ This project make effort to use antd likes redux-form, these are supported confi
 - values : Object
 - dispatch : Function
 - props : Object
-- previousValues : Object 
+- previousValues : Object
 #### immutableProps : Array<String> [optional]
-#### onSubmitFail : Function 
+#### onSubmitFail : Function
 - errors : Object
 - dispatch : Function
 - submitError : Error
@@ -76,7 +78,7 @@ This project make effort to use antd likes redux-form, these are supported confi
 #### onSubmitSuccess : Function [optional]
 - result : Object
 - dispatch : Function
-- props : Object 
+- props : Object
 #### onSubmit : Function
 - values : Object
 - dispatch : Function
@@ -87,15 +89,15 @@ This project make effort to use antd likes redux-form, these are supported confi
 
 There is also supplied redux-form likes action creators:
 
-#### initialize(form, data) 
-data : { fields, ....} 
+#### initialize(form, data)
+data : { fields, ....}
 use fields to set initialValues, you donnot use this action usually
 
-#### destroy(...forms) 
+#### destroy(...forms)
 delete the form data from store
 you donnot use this action usually
 
-#### change(form, fields) 
+#### change(form, fields)
 change the form fields values
 
 #### startSubmit(form)
@@ -111,12 +113,12 @@ delete all errors
 
 
 Note:
-if you want to get/set the submitting state, server validate errors to the form reducer, 
+if you want to get/set the submitting state, server validate errors to the form reducer,
 you would dispatch actions on your own, this is usually done in side effect handlers,
 such as rudux-thunk, redux-promise, redux-saga, redux-observable, etc.
 
 ## Props
-The props listed here are the props that generated to give to your decorated form component. 
+The props listed here are the props that generated to give to your decorated form component.
 
 ### reset : Function
 reset the form values to initialValues
@@ -126,7 +128,7 @@ initialize the form values to values
 
 ## Example
 
-this is a example according to antd docs: 
+this is a example according to antd docs:
 
 ```javascript
 import React, {Component} from 'react'
@@ -162,9 +164,9 @@ class NormalLoginForm extends React.Component {
             <Checkbox>Remember me</Checkbox>
           )}
           <a className="login-form-forgot" href="">Forgot password</a>
-          <Button 
-            type="primary" 
-            htmlType="submit" 
+          <Button
+            type="primary"
+            htmlType="submit"
             className="login-form-button"
             disabled={login.submitting}
           >
@@ -178,7 +180,7 @@ class NormalLoginForm extends React.Component {
 }
 
 const WrappedNormalLoginForm = reduxForm({
-  form: 'login',  //the name of the form data store 
+  form: 'login',  //the name of the form data store
   onSubmit: function(values, dispatch, props) {
       //do with values, dispatch , props
       console.log('Received values of form: ', values);
