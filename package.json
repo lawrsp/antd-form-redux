@@ -1,6 +1,6 @@
 {
   "name": "antd-form-redux",
-  "version": "3.0.27",
+  "version": "3.0.28",
   "description": "connect antd Form to redux with one API. compare to redux-form",
   "browser": "lib/index.js",
   "scripts": {
@@ -40,11 +40,13 @@
     "react": "^16.1.0",
     "rimraf": "^2.6.2"
   },
-  "peerDependencies": {
+  "dependencies": {
     "hoist-non-react-statics": "*",
     "invariant": "*",
     "lodash": "*",
-    "reselect": "*",
+    "reselect": "*"
+  },
+  "peerDependencies": {
     "antd": ">=3",
     "react": ">=16",
     "react-redux": ">=4"
